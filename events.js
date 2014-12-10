@@ -1,4 +1,7 @@
 /*
+Metamorphosis
+http://www.atanaslaskov.com/metamorphosis/
+
 File:        event.js
 Description: DOM events dispatcher
 Author:      Copyright (c) 2014, Atanas Laskov
