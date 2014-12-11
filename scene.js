@@ -1,4 +1,5 @@
 /*
+
 Metamorphosis
 http://www.atanaslaskov.com/metamorphosis/
 
@@ -6,6 +7,7 @@ File:        scene.js
 Description: Animated scene
 Author:      Copyright (c) 2014, Atanas Laskov
 License:     BSD license, see LICENSE for more details.
+
 */
 
 // Construct scene
@@ -16,93 +18,73 @@ function laAnimatedScene() {
 	self.renderer = new THREE.WebGLRenderer( {antialias: true} );
 	self.renderer.setSize( window.innerWidth, window.innerHeight );
 	document.body.appendChild( self.renderer.domElement );
-
-	self.initScene();
-	self.initGeometry();
+	
+	self.init3d();
+	self.load();
 };
 
-// Initialize 3D scene
+// Initialize 3D view
 //
-laAnimatedScene.prototype.initScene = function () {
+laAnimatedScene.prototype.init3d = function() {
 	var self = this;
-
-	self.scene    = new THREE.Scene();
+	
+	self.scene   = new THREE.Scene();
 	self.camera  = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
+	
 	self.camera.position.z = 5;
-	self.angleSwing = 0;
-
+	
 	var lightAmbient = new THREE.AmbientLight( 0xcccccc );
 	self.scene.add( lightAmbient );
-
+	
 	var lightPoint = new THREE.PointLight( 0xff4400, 5, 30 );
 	lightPoint.position.set( 4, 0, 0 );
 	self.scene.add( lightPoint );
-}
+};
 
-// Load morph geometry
+// Load geometry
 //
-laAnimatedScene.prototype.initGeometry = function () {
+laAnimatedScene.prototype.load = function() {
 	var self = this;
-
-	self.morphs = [];
-
-	var material = new THREE.MeshNormalMaterial( { morphTargets: true } );
-	var loader = new THREE.JSONLoader();
-
-	loader.load( "resources/winged-box.js", function ( geo ) {
-		console.log("Morph geometry loaded.");
-
-		var morph = new THREE.MorphAnimMesh( geo, material );
-		morph.duration = 1;
-		morph.time  = 0.5;
-
+	
+	self.creature = new laMorphCreature( function( morph ) {
 		self.scene.add( morph );
-		self.morphs.push( morph );
 	});
-
-	var textGeo = new THREE.TextGeometry( "I'm a flying box.", {size: 0.2, height:0.01, font: "droid sans"} );
+	
+	var textGeo = new THREE.TextGeometry( "I'm a flying box.", {size: 0.2, height:0.01, font: "droid sans"} );			
 	var textMaterial = new THREE.MeshNormalMaterial();
 	var textMesh = new THREE.Mesh( textGeo, textMaterial );
-
-	textMesh.position.x = -1;
-	textMesh.position.y = +2;
+	
+	textMesh.position.x = -1;	
+	textMesh.position.y = +2;	
 	self.scene.add( textMesh );
-}
+};
 
 // Render scene
 //
-laAnimatedScene.prototype.render = function () {
+laAnimatedScene.prototype.render = function() {
 	var self = this;
 	self.renderer.render( self.scene, self.camera );
 };
 
 // Animate scene
 //
-laAnimatedScene.prototype.animate = function (dt) {
+laAnimatedScene.prototype.animate = function( dt ) {
 	var self = this;
-
-	self.angleSwing += ( Math.PI*2 ) * dt;
-
-	for( var i = 0; i < self.morphs.length; i ++ ) {
-
-		self.morphs[ i ].updateAnimation( dt );
-
-		self.morphs[ i ].position.y = Math.cos( self.angleSwing ) * 0.5;
-		self.morphs[ i ].rotation.y += 0.2 * dt;
-	}
+	self.creature.animate( dt );
 };
 
 // Key down
 //
-laAnimatedScene.prototype.keydown = function (code) {
+laAnimatedScene.prototype.keydown = function( code ) {
 };
 
 // Resize viewport
 //
-laAnimatedScene.prototype.resize = function () {
+laAnimatedScene.prototype.resize = function() {
 	var self = this;
+	
+	self.renderer.setSize( window.innerWidth, window.innerHeight );
+	
 	self.camera.aspect = window.innerWidth / window.innerHeight;
 	self.camera.updateProjectionMatrix();
-	self.renderer.setSize( window.innerWidth, window.innerHeight );
 };
