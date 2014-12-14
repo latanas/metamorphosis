@@ -17,6 +17,7 @@ function laAnimatedScene() {
 
 	self.renderer = new THREE.WebGLRenderer( {antialias: true} );
 	self.renderer.setSize( window.innerWidth, window.innerHeight );
+	self.renderer.setClearColor( 0x333333, 1 );
 	document.body.appendChild( self.renderer.domElement );
 	
 	self.init3d();
@@ -31,14 +32,15 @@ laAnimatedScene.prototype.init3d = function() {
 	self.scene   = new THREE.Scene();
 	self.camera  = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 	
-	self.camera.position.z = 5;
+	self.camera.position.y = -1;
+	self.camera.position.z = +12;
 	
-	var lightAmbient = new THREE.AmbientLight( 0xcccccc );
+	/*var lightAmbient = new THREE.AmbientLight( 0xaaaaaa );
 	self.scene.add( lightAmbient );
 	
 	var lightPoint = new THREE.PointLight( 0xff4400, 5, 30 );
-	lightPoint.position.set( 4, 0, 0 );
-	self.scene.add( lightPoint );
+	lightPoint.position.set( 0, 10, 0 );
+	self.scene.add( lightPoint );*/
 };
 
 // Load geometry
@@ -50,13 +52,13 @@ laAnimatedScene.prototype.load = function() {
 		self.scene.add( morph );
 	});
 	
-	var textGeo = new THREE.TextGeometry( "I'm a flying box.", {size: 0.2, height:0.01, font: "droid sans"} );			
+	/*var textGeo = new THREE.TextGeometry( "I'm a flying box.", {size: 0.2, height:0.01, font: "droid sans"} );			
 	var textMaterial = new THREE.MeshNormalMaterial();
 	var textMesh = new THREE.Mesh( textGeo, textMaterial );
 	
 	textMesh.position.x = -1;	
 	textMesh.position.y = +2;	
-	self.scene.add( textMesh );
+	self.scene.add( textMesh );*/
 };
 
 // Render scene
