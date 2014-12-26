@@ -26,7 +26,7 @@ function laMorphCreature( onloaded ) {
 
 	self.angleSwing = 0;
 
-	loader.load( "resources/elephant_fly.js", function ( geo ) {
+	loader.load( "resources/elephant_fly.json", function ( geo ) {
 		console.log("Morph geometry loaded.");
 
 		self.morph = new THREE.MorphAnimMesh( geo, material );
