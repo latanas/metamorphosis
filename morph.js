@@ -26,7 +26,7 @@ function laMorphCreature( onloaded ) {
 
 	self.angleSwing = 0;
 
-	loader.load( "resources/elephant_fly.json", function ( geo ) {
+	loader.load( "elephant_fly.json", function ( geo ) {
 		console.log("Morph geometry loaded.");
 
 		self.morph = new THREE.MorphAnimMesh( geo, material );
@@ -75,7 +75,7 @@ laMorphCreature.prototype.animate = function( dt ) {
 	// Add swing and rotation
 	self.angleSwing += ( Math.PI*0.5 ) * dt;
 	self.morph.position.y = Math.cos( self.angleSwing ) * 0.5;
-	self.morph.rotation.y -= 0.1 * dt;
+	self.morph.rotation.y -= 0.5 * dt;
 };
 
 // Constrain morph ratio to the range [0;1]
